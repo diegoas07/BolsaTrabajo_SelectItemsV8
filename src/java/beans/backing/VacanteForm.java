@@ -5,6 +5,7 @@
  */
 package beans.backing;
 
+import beans.helper.ColoniaHelper;
 import beans.model.Candidato;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -32,7 +33,10 @@ public class VacanteForm {
 
     @ManagedProperty(value = "#{candidato}")
     private Candidato candidato;
-
+    
+    @ManagedProperty(value = "#{coloniaHelper}")
+    private ColoniaHelper coloniaHelper;
+    
     private boolean comentarioEnviado = false;
     
     /**
@@ -78,21 +82,19 @@ public class VacanteForm {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         UIViewRoot uiViewRoot = facesContext.getViewRoot();
         String newCodigoPostal = valueChangeEven.getNewValue().toString();
-        if ("03810".equals(newCodigoPostal)) {
-            //                                                            idFormulario:idCampo
-            UIInput ciudadImputText = (UIInput) uiViewRoot.findComponent("vacanteForm:ciudad");
-            String ciudad = "BG";
-            ciudadImputText.setValue(ciudad);
-            ciudadImputText.setSubmittedValue(ciudad);
-            
-            UIInput coloniaImputText = (UIInput) uiViewRoot.findComponent("vacanteForm:coloniaId");
-            Long colonia = 1L;
-            coloniaImputText.setValue(colonia);
-            coloniaImputText.setSubmittedValue(colonia);
-            
-            facesContext.renderResponse();
-            
-        }
+        //                                                            idFormulario:idCampo
+        UIInput ciudadImputText = (UIInput) uiViewRoot.findComponent("vacanteForm:ciudad");
+        String ciudad = "BG";
+        ciudadImputText.setValue(ciudad);
+        ciudadImputText.setSubmittedValue(ciudad);
+
+        UIInput coloniaImputText = (UIInput) uiViewRoot.findComponent("vacanteForm:coloniaId");
+        Long colonia = this.getColoniaHelper().getColoniaIdporCp(Long.valueOf(newCodigoPostal));
+        coloniaImputText.setValue(colonia);
+        coloniaImputText.setSubmittedValue(colonia);
+
+        facesContext.renderResponse();
+
     }
 
     /**
@@ -111,6 +113,20 @@ public class VacanteForm {
     
     public void ocultaComentario(ActionEvent actionEvent){
         this.comentarioEnviado = !this.comentarioEnviado;
+    }
+
+    /**
+     * @return the coloniaHelper
+     */
+    public ColoniaHelper getColoniaHelper() {
+        return coloniaHelper;
+    }
+
+    /**
+     * @param coloniaHelper the coloniaHelper to set
+     */
+    public void setColoniaHelper(ColoniaHelper coloniaHelper) {
+        this.coloniaHelper = coloniaHelper;
     }
     
 }

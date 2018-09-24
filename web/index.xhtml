@@ -85,9 +85,7 @@
                         <td>
                             <h:selectOneMenu id="coloniaId" required="true" value="#{candidato.idColonia}">
                                 <f:selectItem itemLabel="#{msgs['vacanteForm.seleccione']}" itemValue=""/>
-                                <f:selectItem itemLabel="Napoles" itemValue="1"/>
-                                <f:selectItem itemLabel="Polaco" itemValue="2"/>
-                                <f:selectItem itemLabel="centro" itemValue="3"/>
+                                <f:selectItems value="#{coloniaHelper.selectItems}"/>
                             </h:selectOneMenu>
                         </td>
                         <td>
